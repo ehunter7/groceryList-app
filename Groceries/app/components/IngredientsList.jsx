@@ -1,31 +1,26 @@
 import React from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import colors from '../config/colors'
 
 import AppButton from './AppButton'
 import AppText from './AppText'
 import Indgredient from './Indgredient'
+import RecipeHeader from './RecipeHeader'
 
 var list = ['Useless Ingedient 1', 'Useless Ingedient 2', 'Useless Ingedient 3']
+
 function IngredientsList(props) {
-  const [ingText, onChangeIngText] = React.useState([list])
   const [edit, setEdit] = React.useState(false)
   return (
     <View style={styles.container}>
-      <View style={styles.title}>
-        <AppText>INGREDIENTS</AppText>
-      </View>
+      <RecipeHeader title="INGREDIENTS" />
       <View style={styles.list}>
         {list.map((item) => {
-          return (
-            <Indgredient
-              key={item}
-              edit={edit}
-              text={item}
-              setText={onChangeIngText}
-            />
-          )
+          return <Indgredient key={item} edit={edit} text={item} />
         })}
+        {edit ? (
+          <AppButton title="Save" onPress={() => setEdit(!edit)} />
+        ) : null}
       </View>
     </View>
   )
@@ -38,13 +33,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 10,
   },
+
   list: {
     marginBottom: 20,
   },
-  title: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+
   input: {
     margin: 12,
     borderWidth: 1,

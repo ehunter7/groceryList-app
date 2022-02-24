@@ -5,22 +5,21 @@ import { CheckBox } from 'react-native-elements'
 import AppButton from './AppButton'
 import AppText from './AppText'
 
-function Indgredient({ edit, text, setText }) {
+function Indgredient({ edit, text }) {
   const [checked, setChecked] = React.useState(false)
+  const [ingText, onChangeIngText] = React.useState(text)
+
   return (
     <View style={{ margin: 5 }}>
       {edit ? (
         <>
           <TextInput
-            multiline
-            numberOfLines={15}
             textAlignVertical="top"
-            maxLength={1000}
+            maxLength={10}
             style={styles.input}
-            onChangeText={setText}
-            value={text}
+            onChangeText={onChangeIngText}
+            value={ingText}
           />
-          <AppButton title="Save" />
         </>
       ) : (
         <View style={styles.item}>
@@ -28,7 +27,7 @@ function Indgredient({ edit, text, setText }) {
             style={checked ? { textDecorationLine: 'line-through' } : null}
             onPress={() => setChecked(!checked)}
           >
-            {text}
+            {ingText}
           </AppText>
           <CheckBox checked={checked} onPress={() => setChecked(!checked)} />
         </View>
@@ -39,13 +38,15 @@ function Indgredient({ edit, text, setText }) {
 
 const styles = StyleSheet.create({
   input: {
-    margin: 12,
+    //margin: 12,
+    marginHorizontal: 40,
     borderWidth: 1,
     padding: 10,
   },
   item: {
     flexDirection: 'row',
     marginHorizontal: 40,
+    alignItems: 'center',
   },
 })
 

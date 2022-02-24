@@ -6,4 +6,5 @@ export default {
   bold: '#e76f51',
   white: '#fff',
   black: '#000',
+  medium: '#6e6969',
 }
