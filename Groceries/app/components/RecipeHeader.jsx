@@ -4,7 +4,7 @@ import colors from '../config/colors'
 
 import AppText from './AppText'
 
-function RecipeHeader({ title }) {
+function RecipeHeader({ title, edit, setEdit }) {
   return (
     <View style={styles.title}>
       <AppText>{title}</AppText>
