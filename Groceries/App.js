@@ -6,6 +6,7 @@ import {
   Platform,
   Text,
   View,
+  TextInput,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -21,9 +22,16 @@ import Icon from "./app/components/Icon";
 import ListItem from "./app/components/ListItem";
 import AccountScreen from "./app/screens/AccountScreen";
 import RecipesScreen from "./app/screens/RecipesScreen";
+import { useState } from "react";
+import AppTextInput from "./app/components/AppTextInput";
 
 export default function App() {
-  return <RecipesScreen />;
+  const [firstName, setFirstName] = useState("");
+  return (
+    <Screen>
+      <AppTextInput placeholder="Username" icon="email" />
+    </Screen>
+  );
 }
 
 const styles = StyleSheet.create({
