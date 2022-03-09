@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TextInput,
+  Switch,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -24,12 +25,15 @@ import AccountScreen from "./app/screens/AccountScreen";
 import RecipesScreen from "./app/screens/RecipesScreen";
 import { useState } from "react";
 import AppTextInput from "./app/components/AppTextInput";
+import AppPicker from "./app/components/AppPicker";
 
 export default function App() {
-  const [firstName, setFirstName] = useState("");
+  const [isNew, setIsNew] = useState(false);
+
   return (
     <Screen>
-      <AppTextInput placeholder="Username" icon="email" />
+      <AppPicker icon="apps" placeholder="Catagory" />
+      <AppTextInput icon="email" placeholder="Email" />
     </Screen>
   );
 }
