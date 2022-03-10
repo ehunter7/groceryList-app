@@ -27,12 +27,32 @@ import { useState } from "react";
 import AppTextInput from "./app/components/AppTextInput";
 import AppPicker from "./app/components/AppPicker";
 
-export default function App() {
-  const [isNew, setIsNew] = useState(false);
+const categories = [
+  {
+    label: "Breakfast",
+    value: 1,
+  },
+  {
+    label: "Lunch",
+    value: 2,
+  },
+  {
+    label: "Dinner",
+    value: 3,
+  },
+];
 
+export default function App() {
+  const [category, setCategory] = useState(categories[0]);
   return (
     <Screen>
-      <AppPicker icon="apps" placeholder="Catagory" />
+      <AppPicker
+        selectedItem={category}
+        onSelectItem={(item) => setCategory(item)}
+        items={categories}
+        icon="apps"
+        placeholder="Catagory"
+      />
       <AppTextInput icon="email" placeholder="Email" />
     </Screen>
   );
