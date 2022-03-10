@@ -6,6 +6,8 @@ import {
   Platform,
   Text,
   View,
+  TextInput,
+  Switch,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -21,9 +23,39 @@ import Icon from "./app/components/Icon";
 import ListItem from "./app/components/ListItem";
 import AccountScreen from "./app/screens/AccountScreen";
 import RecipesScreen from "./app/screens/RecipesScreen";
+import { useState } from "react";
+import AppTextInput from "./app/components/AppTextInput";
+import AppPicker from "./app/components/AppPicker";
+
+const categories = [
+  {
+    label: "Breakfast",
+    value: 1,
+  },
+  {
+    label: "Lunch",
+    value: 2,
+  },
+  {
+    label: "Dinner",
+    value: 3,
+  },
+];
 
 export default function App() {
-  return <RecipesScreen />;
+  const [category, setCategory] = useState(categories[0]);
+  return (
+    <Screen>
+      <AppPicker
+        selectedItem={category}
+        onSelectItem={(item) => setCategory(item)}
+        items={categories}
+        icon="apps"
+        placeholder="Catagory"
+      />
+      <AppTextInput icon="email" placeholder="Email" />
+    </Screen>
+  );
 }
 
 const styles = StyleSheet.create({
