@@ -3,9 +3,9 @@ import { Text } from 'react-native'
 
 import defaultStyles from '../config/styles'
 
-function AppText({ children, style, onPress }) {
+function AppText({ children, style, onPress, ...otherProps }) {
   return (
-    <Text onPress={onPress} style={[defaultStyles.text, style]}>
+    <Text onPress={onPress} style={[defaultStyles.text, style]} {...otherProps}>
       {children}
     </Text>
   )

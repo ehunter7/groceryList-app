@@ -12,7 +12,7 @@ const validationSchemas = Yup.object().shape({
   password: Yup.string().required().min(4).label('Password'),
 })
 
-function LoginScreen(props) {
+function LoginScreen() {
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require('../assets/logo-red.png')} />

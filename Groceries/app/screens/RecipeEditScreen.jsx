@@ -7,6 +7,7 @@ import AppFormField from '../components/forms/AppFormField'
 import AppFormPicker from '../components/AppFormPicker'
 import SubmitButton from '../components/forms/SubmitButton'
 import Screen from '../components/Screen'
+import CategoryPickerItem from '../components/CategoryPickerItem'
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
   description: Yup.string().label('Description'),
@@ -15,11 +16,11 @@ const validationSchema = Yup.object().shape({
 })
 
 const categories = [
-  { label: 'Breakfast', value: 1 },
-  { label: 'Snack', value: 2 },
-  { label: 'Lunch', value: 3 },
-  { label: 'Dinner', value: 4 },
-  { label: 'Dessert', value: 5 },
+  { label: 'Breakfast', value: 1, backgroundColor: 'green', icon: 'coffee' },
+  { label: 'Snack', value: 2, backgroundColor: 'blue', icon: 'food-apple' },
+  { label: 'Lunch', value: 3, backgroundColor: 'purple', icon: 'food' },
+  { label: 'Dinner', value: 4, backgroundColor: 'red', icon: 'food-variant' },
+  { label: 'Dessert', value: 5, backgroundColor: 'yellow', icon: 'ice-cream' },
 ]
 
 function RecipeEditScreen(props) {
@@ -45,6 +46,9 @@ function RecipeEditScreen(props) {
           items={categories}
           name="category"
           placeholder="Category"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          width="50%"
         />
         <AppFormField
           maxLength={1000}
