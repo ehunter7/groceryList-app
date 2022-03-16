@@ -8,8 +8,12 @@ import {
   View,
   TextInput,
   Switch,
+  Button,
+  Image,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 
 import AppText from "./app/components/AppText";
 import ViewImageScreen from "./app/screens/ViewImageScreen";
@@ -23,14 +27,34 @@ import Icon from "./app/components/Icon";
 import ListItem from "./app/components/ListItem";
 import AccountScreen from "./app/screens/AccountScreen";
 import RecipesScreen from "./app/screens/RecipesScreen";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppTextInput from "./app/components/AppTextInput";
 import AppPicker from "./app/components/AppPicker";
 import LoginScreen from "./app/screens/LoginScreen";
 import RecipeEditScreen from "./app/screens/RecipeEditScreen";
+import ImageInput from "./app/components/ImageInput";
+import ImageInputList from "./app/components/ImageInputList";
 
 export default function App() {
-  return <RecipeEditScreen />;
+  const [imageUris, setImageUris] = useState([]);
+
+  const handleAdd = (uri) => {
+    setImageUris([...imageUris, uri]);
+  };
+
+  const handleRemove = (uri) => {
+    setImageUris(imageUris.filter((imageUri) => imageUri !== uri));
+  };
+
+  return (
+    <Screen>
+      <ImageInputList
+        imageUris={imageUris}
+        onAddImage={handleAdd}
+        onRemoveImage={handleRemove}
+      />
+    </Screen>
+  );
 }
 
 const styles = StyleSheet.create({
