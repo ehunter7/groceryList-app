@@ -45,7 +45,7 @@ export default function ImageInput({ imageUri, onChangeImage }) {
         onChangeImage(result.uri)
       }
     } catch (error) {
-      console.log('error reawding image: ', error)
+      console.log('error reading image: ', error)
     }
   }
   return (

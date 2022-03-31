@@ -8,11 +8,15 @@ import AppFormPicker from '../components/AppFormPicker'
 import SubmitButton from '../components/forms/SubmitButton'
 import Screen from '../components/Screen'
 import CategoryPickerItem from '../components/CategoryPickerItem'
+import FormImagePicker from '../components/forms/FormImagePicker'
+import useLocation from '../hooks/useLocation'
+
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
   description: Yup.string().label('Description'),
   instructions: Yup.string().label('Instructions'),
   category: Yup.object().required().nullable().label('Category'),
+  images: Yup.array().min(1, 'Please select at least one image'),
 })
 
 const categories = [
@@ -23,7 +27,9 @@ const categories = [
   { label: 'Dessert', value: 5, backgroundColor: 'yellow', icon: 'ice-cream' },
 ]
 
-function RecipeEditScreen(props) {
+function RecipeEditScreen() {
+  const location = useLocation()
+
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -32,6 +38,7 @@ function RecipeEditScreen(props) {
           description: '',
           instructions: '',
           category: null,
+          images: [],
         }}
         onSubmit={(values) => console.log(values)}
         validationSchema={validationSchema}
