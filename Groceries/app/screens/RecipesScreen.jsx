@@ -3,6 +3,7 @@ import { FlatList, StyleSheet } from 'react-native'
 import Card from '../components/Card'
 import Screen from '../components/Screen'
 import colors from '../config/colors'
+import route from '../navigation/route'
 
 const recipes = [
   {
@@ -19,7 +20,7 @@ const recipes = [
   },
 ]
 
-function RecipesScreen(props) {
+function RecipesScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <FlatList
@@ -30,6 +31,7 @@ function RecipesScreen(props) {
             title={item.title}
             subTitle={item.descripion}
             image={item.image}
+            onPress={() => navigation.navigate(route.RECIPE_DETAILS, item)}
           />
         )}
       />

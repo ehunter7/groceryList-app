@@ -14,14 +14,15 @@ import ListItem from '../components/ListItem'
 import RecipeInstructions from '../components/RecipeInstructions'
 import colors from '../config/colors'
 
-function RecipeDetailsScreen(props) {
+function RecipeDetailsScreen({ route }) {
+  const listing = route.params
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image style={styles.image} source={require('../assets/lasagna.jpg')} />
+        <Image style={styles.image} source={listing.image} />
         <View style={styles.detailsContainer}>
-          <AppText style={styles.title}>Lasagna</AppText>
-          <AppText style={styles.description}>Meaty goodness</AppText>
+          <AppText style={styles.title}>{listing.title}</AppText>
+          <AppText style={styles.description}>{listing.description}</AppText>
         </View>
         <IngredientsList />
         <RecipeInstructions />
