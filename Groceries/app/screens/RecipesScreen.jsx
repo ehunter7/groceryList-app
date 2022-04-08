@@ -19,7 +19,7 @@ const recipes = [
   },
 ]
 
-function RecipesScreen(props) {
+function RecipesScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <FlatList
@@ -30,6 +30,7 @@ function RecipesScreen(props) {
             title={item.title}
             subTitle={item.descripion}
             image={item.image}
+            onPress={() => navigation.navigate('RecipeDetails', item)}
           />
         )}
       />
