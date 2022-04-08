@@ -9,13 +9,14 @@ import RecipesScreen from '../screens/RecipesScreen'
 import FeedNavigator from './FeedNavigator'
 import AcccountNavigator from './AccountNavigator'
 import NewRecipeButton from './NewRecipeButton'
+import route from './route'
 
 const Tab = createBottomTabNavigator()
 
 const AppNavigator = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
     <Tab.Screen
-      name="Feed"
+      name={route.FEED}
       component={FeedNavigator}
       options={{
         headerShown: false,
@@ -25,11 +26,13 @@ const AppNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="RecipeEdit"
+      name={route.RECIPE_EDIT}
       component={RecipeEditScreen}
       options={({ navigation }) => ({
         tabBarButton: () => (
-          <NewRecipeButton onPress={() => navigation.navigate('RecipeEdit')} />
+          <NewRecipeButton
+            onPress={() => navigation.navigate(route.RECIPE_EDIT)}
+          />
         ),
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons
@@ -41,7 +44,7 @@ const AppNavigator = () => (
       })}
     />
     <Tab.Screen
-      name="Account"
+      name={route.ACCOUNT}
       component={AcccountNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
