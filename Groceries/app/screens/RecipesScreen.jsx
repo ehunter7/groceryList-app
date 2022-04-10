@@ -1,26 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import Card from '../components/Card'
 import Screen from '../components/Screen'
 import colors from '../config/colors'
 import route from '../navigation/route'
 
-const recipes = [
-  {
-    id: 1,
-    title: 'Lasagna',
-    descripion: 'Meaty Goodness',
-    image: require('../assets/lasagna.jpg'),
-  },
-  {
-    id: 2,
-    title: 'Rice and Beans',
-    descripion: 'Wholesome',
-    image: require('../assets/rice-beans.jpg'),
-  },
-]
+import recipesApi from '../api/recipes'
+
+// const recipes = [
+//   {
+//     id: 1,
+//     title: 'Lasagna',
+//     descripion: 'Meaty Goodness',
+//     image: require('../assets/lasagna.jpg'),
+//   },
+//   {
+//     id: 2,
+//     title: 'Rice and Beans',
+//     descripion: 'Wholesome',
+//     image: require('../assets/rice-beans.jpg'),
+//   },
+// ]
 
 function RecipesScreen({ navigation }) {
+  const [recipes, setRecipes] = useState([])
+
+  useEffect(() => {
+    loadRecipes()
+  }, [])
+
+  const loadRecipes = async () => {
+    const response = await recipesApi.getRecipes()
+    setRecipes(response.data)
+  }
+
   return (
     <Screen style={styles.screen}>
       <FlatList
@@ -29,8 +42,8 @@ function RecipesScreen({ navigation }) {
         renderItem={({ item }) => (
           <Card
             title={item.title}
-            subTitle={item.descripion}
-            image={item.image}
+            subTitle={item.price} //Needs to be changed to description in database
+            imageUrl={item.images[0].url}
             onPress={() => navigation.navigate(route.RECIPE_DETAILS, item)}
           />
         )}
