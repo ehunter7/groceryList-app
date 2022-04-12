@@ -6,6 +6,9 @@ import colors from '../config/colors'
 import route from '../navigation/route'
 
 import recipesApi from '../api/recipes'
+import AppText from '../components/AppText'
+import AppButton from '../components/AppButton'
+import ActivityIndicator from '../components/ActivityIndicator'
 
 // const recipes = [
 //   {
@@ -24,18 +27,35 @@ import recipesApi from '../api/recipes'
 
 function RecipesScreen({ navigation }) {
   const [recipes, setRecipes] = useState([])
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     loadRecipes()
   }, [])
 
   const loadRecipes = async () => {
+    setLoading(true)
     const response = await recipesApi.getRecipes()
+    setLoading(false)
+
+    if (!response.ok) {
+      return setError(true)
+    }
+
+    setError(false)
     setRecipes(response.data)
   }
 
   return (
     <Screen style={styles.screen}>
+      {error && (
+        <>
+          <AppText>Couldn't retrieve the listings.</AppText>
+          <AppButton title="Retry" onPress={loadRecipes} />
+        </>
+      )}
+      <ActivityIndicator visible={loading} />
       <FlatList
         data={recipes}
         keyExtractor={(recipe) => recipe.id.toString()}
