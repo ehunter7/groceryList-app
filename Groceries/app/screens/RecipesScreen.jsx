@@ -9,6 +9,7 @@ import recipesApi from '../api/recipes'
 import AppText from '../components/AppText'
 import AppButton from '../components/AppButton'
 import ActivityIndicator from '../components/ActivityIndicator'
+import useApi from '../hooks/useApi'
 
 // const recipes = [
 //   {
@@ -26,26 +27,13 @@ import ActivityIndicator from '../components/ActivityIndicator'
 // ]
 
 function RecipesScreen({ navigation }) {
-  const [recipes, setRecipes] = useState([])
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const { data: recipes, error, loading, request: loadRecipes } = useApi(
+    recipesApi.getRecipes,
+  )
 
   useEffect(() => {
     loadRecipes()
   }, [])
-
-  const loadRecipes = async () => {
-    setLoading(true)
-    const response = await recipesApi.getRecipes()
-    setLoading(false)
-
-    if (!response.ok) {
-      return setError(true)
-    }
-
-    setError(false)
-    setRecipes(response.data)
-  }
 
   return (
     <Screen style={styles.screen}>

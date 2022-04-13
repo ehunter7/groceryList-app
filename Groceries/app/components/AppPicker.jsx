@@ -12,7 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import colors from '../config/colors'
 import defaultStyles from '../config/styles'
 import AppText from './AppText'
-import PickerItem from './PickerItem'
+import CategoryPickerItem from './CategoryPickerItem'
 
 function AppPicker({
   icon,
@@ -22,7 +22,7 @@ function AppPicker({
   onSelectItem,
   selectedItem,
   width = '100%',
-  PickerItemComponent = PickerItem,
+  //PickerItemComponent,
 }) {
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -60,7 +60,7 @@ function AppPicker({
           keyExtractor={(item) => item.value.toString()}
           numColumns={numberOfColumns}
           renderItem={({ item }) => (
-            <PickerItemComponent
+            <CategoryPickerItem
               item={item}
               label={item.label}
               onPress={() => {

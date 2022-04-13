@@ -10,6 +10,7 @@ import Screen from '../components/Screen'
 import CategoryPickerItem from '../components/CategoryPickerItem'
 import FormImagePicker from '../components/forms/FormImagePicker'
 import useLocation from '../hooks/useLocation'
+import recipesApi from '../api/recipes'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
@@ -30,6 +31,16 @@ const categories = [
 function RecipeEditScreen() {
   const location = useLocation()
 
+  const handleSubmit = async (recipe) => {
+    console.log('yup')
+    const result = await recipesApi.addRecipe({ ...recipe, location })
+    console.log('api')
+    if (!result.ok) {
+      return alert('Could not save the recipe')
+    }
+    alert('Success')
+  }
+
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -40,7 +51,7 @@ function RecipeEditScreen() {
           category: null,
           images: [],
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <AppFormField maxLength={255} name="title" placeholder="Title" />
@@ -54,7 +65,7 @@ function RecipeEditScreen() {
           name="category"
           placeholder="Category"
           numberOfColumns={3}
-          PickerItemComponent={CategoryPickerItem}
+          //PickerItemComponent={CategoryPickerItem}
           width="50%"
         />
         <AppFormField
