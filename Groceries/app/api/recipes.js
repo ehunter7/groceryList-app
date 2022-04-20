@@ -7,23 +7,28 @@ const getRecipes = () => client.get(endpoint);
 const addRecipe = (recipe) => {
   const data = new FormData();
   data.append("title", recipe.title);
-  data.append("price", recipe.price);
+  data.append("price", recipe.description);
   data.append("categoryId", recipe.category.value);
-  data.append("description", recipe.description);
+  data.append("description", recipe.instructions);
 
-  recipe.images.foreach((image, index) =>
-    data.append("images", {
-      name: "image" + index,
-      type: "image/jpeg",
-      uri: image,
-    })
-  );
+  //TODO Need to build logic for when there is no image uploaded.
+  // if (recipe.images.length > 0) {
+  //   recipe.images.foreach((image, index) =>
+  //     data.append("images", {
+  //       name: "image" + index,
+  //       type: "image/jpeg",
+  //       uri: image,
+  //     })
+  //   );
+  // }
 
-  if (recipe.location) {
-    data.append("location", JSON.stringify(recipe.location));
-  }
+  // if (recipe.location) {
+  //   data.append("location", JSON.stringify(recipe.location));
+  // }
 
-  return client.post(endpoint, data);
+  return client.post(endpoint, data, {
+    onUploadProgress: (progress) => console.log(progress),
+  });
 };
 
 export default {

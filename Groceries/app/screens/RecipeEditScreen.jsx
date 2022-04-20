@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().label('Description'),
   instructions: Yup.string().label('Instructions'),
   category: Yup.object().required().nullable().label('Category'),
-  images: Yup.array().min(1, 'Please select at least one image'),
+  // images: Yup.array().min(1, 'Please select at least one image'),
 })
 
 const categories = [
@@ -32,9 +32,8 @@ function RecipeEditScreen() {
   const location = useLocation()
 
   const handleSubmit = async (recipe) => {
-    console.log('yup')
-    const result = await recipesApi.addRecipe({ ...recipe, location })
-    console.log('api')
+    const result = await recipesApi.addRecipe({ ...recipe }) // removed location
+
     if (!result.ok) {
       return alert('Could not save the recipe')
     }
@@ -65,13 +64,13 @@ function RecipeEditScreen() {
           name="category"
           placeholder="Category"
           numberOfColumns={3}
-          //PickerItemComponent={CategoryPickerItem}
           width="50%"
         />
         <AppFormField
           maxLength={1000}
           multiline
           numberOfLines={4}
+          ANDROIDS
           name="instructions"
           placeholder="Instructions"
         />
