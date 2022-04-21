@@ -24,11 +24,14 @@ export default function ImageInput({ imageUri, onChangeImage }) {
   }
 
   const handlePress = () => {
-    if (!imageUri) {
+    // if (!imageUri) {
+    if (imageUri === '') {
       selectImage()
     } else {
       Alert.alert('Delete', 'Are you sure you want to delete this image?', [
-        { text: 'Yes', onPress: () => onChangeImage(null) },
+        // { text: 'Yes', onPress: () => onChangeImage(null) },
+        { text: 'Yes', onPress: () => onChangeImage('') },
+
         { text: 'No' },
       ])
     }
@@ -51,14 +54,16 @@ export default function ImageInput({ imageUri, onChangeImage }) {
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
-        {!imageUri && (
+        {imageUri === '' && (
           <MaterialCommunityIcons
             color={colors.medium}
             name="camera"
             size={40}
           />
         )}
-        {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+        {imageUri != '' && (
+          <Image source={{ uri: imageUri }} style={styles.image} />
+        )}
       </View>
     </TouchableWithoutFeedback>
   )
