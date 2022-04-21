@@ -18,6 +18,7 @@ const validationSchema = Yup.object().shape({
   instructions: Yup.string().label('Instructions'),
   category: Yup.object().required().nullable().label('Category'),
   // images: Yup.array().min(1, 'Please select at least one image'),
+  image: Yup.string().required().label('Image'),
 })
 
 const categories = [
@@ -48,11 +49,13 @@ function RecipeEditScreen() {
           description: '',
           instructions: '',
           category: null,
-          images: [],
+          // images: [],
+          image: '',
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
+        <FormImagePicker name="image" />
         <AppFormField maxLength={255} name="title" placeholder="Title" />
         <AppFormField
           maxLength={500}

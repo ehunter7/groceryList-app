@@ -13,13 +13,15 @@ const addRecipe = (recipe) => {
 
   //TODO Need to build logic for when there is no image uploaded.
   // if (recipe.images.length > 0) {
-  //   recipe.images.foreach((image, index) =>
-  //     data.append("images", {
-  //       name: "image" + index,
-  //       type: "image/jpeg",
-  //       uri: image,
-  //     })
-  //   );
+  // recipe.images.foreach(
+  //   (image, index) =>
+  data.append("images", {
+    name: "image" + 44,
+    type: "image/jpeg",
+    // uri: recipe.images[0],
+    uri: recipe.image,
+  });
+  // );
   // }
 
   // if (recipe.location) {
