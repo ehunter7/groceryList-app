@@ -14,7 +14,7 @@ import recipesApi from '../api/recipes'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
-  description: Yup.string().label('Description'),
+  description: Yup.string().required().label('Description'),
   instructions: Yup.string().label('Instructions'),
   category: Yup.object().required().nullable().label('Category'),
   // images: Yup.array().min(1, 'Please select at least one image'),

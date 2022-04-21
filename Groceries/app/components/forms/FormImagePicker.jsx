@@ -11,18 +11,18 @@ export default function FormImagePicker({ name }) {
   // const imageUris = values[name]
   const imageUris = values.image
 
-  console.log('Values', values)
   const handleAdd = (uri) => {
     // setFieldValue(name, [...values[name], uri])
     setFieldValue(name, uri)
   }
 
-  const handleRemove = (uri) => {
-    setFieldValue(
-      name,
-      values[name].filter((imageUri) => imageUri !== uri),
-    )
-  }
+  //Was used when uploading mulitple images
+  // const handleRemove = (uri) => {
+  //   setFieldValue(
+  //     name,
+  //     values[name].filter((imageUri) => imageUri !== uri),
+  //   )
+  // }
 
   return (
     <>
@@ -39,7 +39,8 @@ export default function FormImagePicker({ name }) {
         imageUri={values[name]}
         onChangeImage={() => handleRemove(values[name])}
       /> */}
-      <ErrorMessage error={errors[name]} visisble={touched[name]} />
+
+      <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   )
 }
