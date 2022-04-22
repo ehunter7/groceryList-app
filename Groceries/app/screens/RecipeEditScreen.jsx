@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import * as Yup from 'yup'
 
@@ -11,6 +11,7 @@ import CategoryPickerItem from '../components/CategoryPickerItem'
 import FormImagePicker from '../components/forms/FormImagePicker'
 import useLocation from '../hooks/useLocation'
 import recipesApi from '../api/recipes'
+import UploadScreen from './UploadScreen'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
@@ -31,18 +32,31 @@ const categories = [
 
 function RecipeEditScreen() {
   const location = useLocation()
+  const [uploadVisible, setUploadVisible] = useState(false)
+  const [progress, setProgress] = useState(false)
 
-  const handleSubmit = async (recipe) => {
-    const result = await recipesApi.addRecipe({ ...recipe }) // removed location
+  const handleSubmit = async (recipe, { resetForm }) => {
+    setProgress(0)
+
+    setUploadVisible(true)
+    const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
+      setProgress(progress),
+    ) // removed location
 
     if (!result.ok) {
+      setUploadVisible(false)
       return alert('Could not save the recipe')
     }
-    alert('Success')
+    resetForm()
   }
 
   return (
     <Screen style={styles.container}>
+      <UploadScreen
+        onDone={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <AppForm
         initialValues={{
           title: '',
