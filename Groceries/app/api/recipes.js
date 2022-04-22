@@ -4,7 +4,7 @@ const endpoint = "/listings";
 
 const getRecipes = () => client.get(endpoint);
 
-const addRecipe = (recipe) => {
+const addRecipe = (recipe, onUploadProgress) => {
   const data = new FormData();
   data.append("title", recipe.title);
   data.append("price", recipe.description);
@@ -29,7 +29,8 @@ const addRecipe = (recipe) => {
   // }
 
   return client.post(endpoint, data, {
-    onUploadProgress: (progress) => console.log(progress),
+    onUploadProgress: (progress) =>
+      onUploadProgress(progress.loaded / progress.total),
   });
 };
 
