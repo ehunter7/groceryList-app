@@ -53,6 +53,7 @@ function RecipesScreen({ navigation }) {
             subTitle={item.price} //Needs to be changed to description in database
             imageUrl={item.images[0].url}
             onPress={() => navigation.navigate(route.RECIPE_DETAILS, item)}
+            thumbnailUrl={item.images[0].thumbnailUrl}
           />
         )}
       />
