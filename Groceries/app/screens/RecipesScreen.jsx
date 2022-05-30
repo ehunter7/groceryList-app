@@ -10,26 +10,40 @@ import AppText from '../components/AppText'
 import AppButton from '../components/AppButton'
 import ActivityIndicator from '../components/ActivityIndicator'
 import useApi from '../hooks/useApi'
+import API from '../api/api'
 
-// const recipes = [
-//   {
-//     id: 1,
-//     title: 'Lasagna',
-//     descripion: 'Meaty Goodness',
-//     image: require('../assets/lasagna.jpg'),
-//   },
-//   {
-//     id: 2,
-//     title: 'Rice and Beans',
-//     descripion: 'Wholesome',
-//     image: require('../assets/rice-beans.jpg'),
-//   },
-// ]
+const recipesList = [
+  {
+    heading: {
+      id: 1,
+      title: 'Lasagna',
+      descripion: 'Meaty Goodness',
+      image: require('../assets/lasagna.jpg'),
+    },
+  },
+  {
+    heading: {
+      id: 2,
+      title: 'Rice and Beans',
+      descripion: 'Wholesome',
+      image: require('../assets/rice-beans.jpg'),
+    },
+  },
+]
 
 function RecipesScreen({ navigation }) {
-  const { data: recipes, error, loading, request: loadRecipes } = useApi(
-    recipesApi.getRecipes,
-  )
+  // const { data: recipes, error, loading, request: loadRecipes } = useApi(
+  //   recipesApi.getRecipes,
+  // )
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [recipes, setRecipes] = useState([])
+
+  const loadRecipes = async () => {
+    const results = await API.getRecipes()
+    // console.log('---------------', results[0].heading.description)
+    setRecipes(results)
+  }
 
   useEffect(() => {
     loadRecipes()
@@ -46,15 +60,18 @@ function RecipesScreen({ navigation }) {
       <ActivityIndicator visible={loading} />
       <FlatList
         data={recipes}
-        keyExtractor={(recipe) => recipe.id.toString()}
-        renderItem={({ item }) => (
-          <Card
-            title={item.title}
-            subTitle={item.price} //Needs to be changed to description in database
-            imageUrl={item.images[0].url}
-            onPress={() => navigation.navigate(route.RECIPE_DETAILS, item)}
-          />
-        )}
+        keyExtractor={(recipe) => recipe.id}
+        renderItem={({ item }) => {
+          console.log('item', item.heading.description)
+          return (
+            <Card
+              title={item.heading.title}
+              subTitle={item.heading.description} //Needs to be changed to description in database
+              imageUrl={item.heading.image}
+              onPress={() => navigation.navigate(route.RECIPE_DETAILS, item)}
+            />
+          )
+        }}
       />
     </Screen>
   )
