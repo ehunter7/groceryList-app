@@ -13,6 +13,7 @@ import useLocation from '../hooks/useLocation'
 import recipesApi from '../api/recipes'
 import UploadScreen from './UploadScreen'
 import API from '../api/api'
+
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
   description: Yup.string().required().label('Description'),
@@ -36,16 +37,16 @@ function RecipeEditScreen() {
   const [progress, setProgress] = useState(false)
 
   const handleSubmit = async (recipe, { resetForm }) => {
-    setProgress(0)
+    setProgress(1)
 
     setUploadVisible(true)
     // const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
     //   setProgress(progress),
     // ) // removed location
 
-    API.addRecipe(recipe).then((res) => console.log('res', res))
+    API.addRecipe(recipe)
     // if (!result.ok) {
-    //   setUploadVisible(false)
+    // setUploadVisible(false)
     //   return alert('Could not save the recipe')
     // }
     resetForm()
