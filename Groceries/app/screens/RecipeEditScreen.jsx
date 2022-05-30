@@ -12,7 +12,7 @@ import FormImagePicker from '../components/forms/FormImagePicker'
 import useLocation from '../hooks/useLocation'
 import recipesApi from '../api/recipes'
 import UploadScreen from './UploadScreen'
-
+import API from '../api/api'
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
   description: Yup.string().required().label('Description'),
@@ -39,14 +39,15 @@ function RecipeEditScreen() {
     setProgress(0)
 
     setUploadVisible(true)
-    const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
-      setProgress(progress),
-    ) // removed location
+    // const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
+    //   setProgress(progress),
+    // ) // removed location
 
-    if (!result.ok) {
-      setUploadVisible(false)
-      return alert('Could not save the recipe')
-    }
+    API.addRecipe(recipe).then((res) => console.log('res', res))
+    // if (!result.ok) {
+    //   setUploadVisible(false)
+    //   return alert('Could not save the recipe')
+    // }
     resetForm()
   }
 
