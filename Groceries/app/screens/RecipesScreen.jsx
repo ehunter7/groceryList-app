@@ -62,7 +62,6 @@ function RecipesScreen({ navigation }) {
         data={recipes}
         keyExtractor={(recipe) => recipe.id}
         renderItem={({ item }) => {
-          console.log('item', item.heading.description)
           return (
             <Card
               title={item.heading.title}
