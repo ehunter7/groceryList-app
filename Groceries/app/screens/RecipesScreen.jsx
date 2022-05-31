@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FlatList, StyleSheet } from 'react-native'
 import Card from '../components/Card'
 import Screen from '../components/Screen'
@@ -11,6 +11,7 @@ import AppButton from '../components/AppButton'
 import ActivityIndicator from '../components/ActivityIndicator'
 import useApi from '../hooks/useApi'
 import API from '../api/api'
+import AuthContext from '../auth/context'
 
 const recipesList = [
   {
@@ -32,6 +33,8 @@ const recipesList = [
 ]
 
 function RecipesScreen({ navigation }) {
+  const authContext = useContext(AuthContext)
+
   // const { data: recipes, error, loading, request: loadRecipes } = useApi(
   //   recipesApi.getRecipes,
   // )
@@ -47,6 +50,7 @@ function RecipesScreen({ navigation }) {
 
   useEffect(() => {
     loadRecipes()
+    console.log('auth recipescreen.js', authContext.user)
   }, [])
 
   return (

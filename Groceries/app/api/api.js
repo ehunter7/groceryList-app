@@ -14,7 +14,7 @@ export default {
           heading,
         });
       });
-      alert("Boom!");
+      // alert("Boom!");
     });
 
     return recipes;

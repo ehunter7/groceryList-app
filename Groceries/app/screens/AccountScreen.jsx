@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
+import { auth } from '../../firebase'
+import AuthContext from '../auth/context'
 import Icon from '../components/Icon'
 import ListItem from '../components/ListItem'
 import ListItemSeperator from '../components/ListItemSeperator'
 import Screen from '../components/Screen'
 import colors from '../config/colors'
+import route from '../navigation/route'
 
 const menuItems = [
   {
@@ -25,11 +28,21 @@ const menuItems = [
 ]
 
 function AccountScreen({ navigation }) {
+  const user = auth.currentUser
+  const authContext = useContext(AuthContext)
+
+  const handleLogOut = () => {
+    auth.signOut().then(() => {
+      alert('Logged out!')
+      authContext.setUser(null)
+    })
+  }
+
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="Lenai"
+          title={user.email}
           subTitle="#1 Chef"
           image={require('../assets/lenai.png')}
         />
@@ -56,6 +69,7 @@ function AccountScreen({ navigation }) {
       <ListItem
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
+        onPress={handleLogOut}
       />
     </Screen>
   )
