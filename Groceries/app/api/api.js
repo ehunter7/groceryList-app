@@ -1,34 +1,32 @@
-import { firebase } from "../../firebase";
+import { useContext } from "react";
+import { auth, firebase } from "../../firebase";
+import AuthContext from "../auth/context";
 
 const recipeRef = firebase.firestore().collection("family");
 const oldrecipeRef = firebase.firestore().collection("groceries");
+const familiesRef = firebase.firestore().collection("families");
 
+const user = auth.currentUser;
 export default {
-  getRecipes: async () => {
+  getRecipes: async (family) => {
     const recipes = [];
-    await oldrecipeRef.get().then((res) => {
-      res.forEach((doc) => {
-        const { heading } = doc.data();
-        recipes.push({
-          id: doc.id,
-          heading,
-        });
-      });
-      // alert("Boom!");
-    });
+    await recipeRef
+      .doc(family)
+      .get()
+      .then((res) => {
+        const recipeShuttle = res.data();
 
+        recipeShuttle.data.map((doc) => {
+          recipes.push(doc);
+        });
+        alert("Boom!");
+      })
+      .catch((error) => console.log("damnit bobby", error));
+    console.log(
+      "----------------------------------------------------------------------------"
+    );
+    console.log(recipes);
     return recipes;
-    // recipeRef.orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
-    //   const recipes = [];
-    //   querySnapshot.forEach((doc) => {
-    //     const { heading } = doc.data();
-    //     recipes.push({
-    //       id: doc.id,
-    //       heading,
-    //     });
-    //   });
-    //   return recipes;
-    // });
   },
   deleteRecipes: (recipe) => {
     recipeRef
@@ -41,7 +39,7 @@ export default {
         alert(error);
       });
   },
-  addRecipe: async (recipe) => {
+  addRecipe: async (recipe, family) => {
     const date = Date.now();
     const data = {
       id: date,
@@ -50,37 +48,92 @@ export default {
     };
     const recipes = [];
     await recipeRef
-      .doc("Sg0v98QPYGUWWZYUhMOp")
+      .doc(family)
       .get()
       .then((res) => {
-        // res.forEach((doc) => {
-        //   const { data } = doc.data();
-        //   console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx");
-        //   console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx");
-        //   console.log("xxxxxxxxxxxxxxxxxxxxxxxxxx");
-        //   console.log(doc, "=>", doc.data());
-        //   recipes.push({
-        //     // id: doc.id,
-        //     data,
-        //   });
-        // });
         res.data().data.map((recipe) => {
           recipes.push(recipe);
         });
-      });
+      })
+      .catch((error) => console.log(error));
 
     recipes.push(data);
     const updatedRecipeList = {
       data: recipes,
     };
     await recipeRef
-      .doc("Sg0v98QPYGUWWZYUhMOp")
-      .update(updatedRecipeList)
+      .doc(family)
+      .set(updatedRecipeList)
       .then(() => {
         alert("Success");
       })
       .catch((error) => {
         alert(error);
       });
+  },
+
+  //----------Families------------------
+  addFamily: async (family) => {
+    const ids = [];
+    familiesRef
+      .doc(family.name)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          if (doc.data().password !== family.password) {
+            alert("Invalid Family name or Password");
+            return;
+          }
+          const users = doc.data().userIds;
+          for (var key in users) {
+            ids.push(users[key]);
+          }
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+        return;
+      });
+    ids.push(user.uid);
+    const fam = {
+      ...family,
+      userIds: ids,
+    };
+
+    await familiesRef
+      .doc(family.name)
+      .set(fam)
+      .then(() => {
+        return family.name;
+      })
+      .catch((error) => alert(error));
+    // await familiesRef
+    //   .add(family)
+    //   .then((res) => alert("Family Created!"))
+    //   .catch((error) => alert(error));
+  },
+  getFamily: async (userid) => {
+    let famName = "";
+    await familiesRef
+      .get()
+      .then((res) => {
+        res.forEach((doc) => {
+          const { userIds } = doc.data();
+          userIds.map((id) => {
+            if (id === userid) {
+              famName = doc.data().name;
+            }
+          });
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+        return;
+      });
+    return famName;
   },
 };

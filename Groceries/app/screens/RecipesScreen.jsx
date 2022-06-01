@@ -12,6 +12,8 @@ import ActivityIndicator from '../components/ActivityIndicator'
 import useApi from '../hooks/useApi'
 import API from '../api/api'
 import AuthContext from '../auth/context'
+import api from '../api/api'
+import { auth } from '../../firebase'
 
 const recipesList = [
   {
@@ -34,7 +36,7 @@ const recipesList = [
 
 function RecipesScreen({ navigation }) {
   const authContext = useContext(AuthContext)
-
+  const user = auth.currentUser
   // const { data: recipes, error, loading, request: loadRecipes } = useApi(
   //   recipesApi.getRecipes,
   // )
@@ -43,14 +45,20 @@ function RecipesScreen({ navigation }) {
   const [recipes, setRecipes] = useState([])
 
   const loadRecipes = async () => {
-    const results = await API.getRecipes()
-    // console.log('---------------', results[0].heading.description)
+    const familyName = await api.getFamily(user.uid)
+
+    const mUser = {
+      ...user,
+      family: familyName,
+    }
+    authContext.setUser(mUser)
+    const results = await API.getRecipes(familyName)
+    // // console.log('---------------', results[0].heading.description)
     setRecipes(results)
   }
 
   useEffect(() => {
     loadRecipes()
-    console.log('auth recipescreen.js', authContext.user)
   }, [])
 
   return (
@@ -68,9 +76,9 @@ function RecipesScreen({ navigation }) {
         renderItem={({ item }) => {
           return (
             <Card
-              title={item.heading.title}
-              subTitle={item.heading.description} //Needs to be changed to description in database
-              imageUrl={item.heading.image}
+              title={item.recipe.title}
+              subTitle={item.recipe.description} //Needs to be changed to description in database
+              imageUrl={item.recipe.image}
               onPress={() => navigation.navigate(route.RECIPE_DETAILS, item)}
             />
           )
