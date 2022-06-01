@@ -16,6 +16,7 @@ const menuItems = [
       name: 'format-list-bulleted',
       backgroundColor: colors.primary,
     },
+    targetScreen: 'Account',
   },
   {
     title: 'My Messages',
@@ -25,12 +26,20 @@ const menuItems = [
     },
     targetScreen: 'Messages',
   },
+  {
+    title: 'My Family',
+    icon: {
+      name: 'home',
+      backgroundColor: colors.secondary,
+    },
+    targetScreen: 'Family',
+  },
 ]
 
 function AccountScreen({ navigation }) {
   const user = auth.currentUser
   const authContext = useContext(AuthContext)
-
+  console.log('authContext.user', authContext.user)
   const handleLogOut = () => {
     auth.signOut().then(() => {
       alert('Logged out!')
@@ -44,7 +53,7 @@ function AccountScreen({ navigation }) {
         <ListItem
           title={user.email}
           subTitle="#1 Chef"
-          image={require('../assets/lenai.png')}
+          image={require('../assets/default_profile.jpg')}
         />
       </View>
       <View style={styles.container}>

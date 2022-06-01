@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import * as Yup from 'yup'
 
@@ -13,6 +13,7 @@ import useLocation from '../hooks/useLocation'
 import recipesApi from '../api/recipes'
 import UploadScreen from './UploadScreen'
 import API from '../api/api'
+import AuthContext from '../auth/context'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
@@ -35,7 +36,7 @@ function RecipeEditScreen() {
   const location = useLocation()
   const [uploadVisible, setUploadVisible] = useState(false)
   const [progress, setProgress] = useState(false)
-
+  const authContext = useContext(AuthContext)
   const handleSubmit = async (recipe, { resetForm }) => {
     setProgress(1)
 
@@ -44,7 +45,7 @@ function RecipeEditScreen() {
     //   setProgress(progress),
     // ) // removed location
 
-    API.addRecipe(recipe)
+    API.addRecipe(recipe, authContext.user.family)
     // if (!result.ok) {
     // setUploadVisible(false)
     //   return alert('Could not save the recipe')

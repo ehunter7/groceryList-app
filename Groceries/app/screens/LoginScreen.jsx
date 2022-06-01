@@ -11,6 +11,7 @@ import navigationTheme from '../navigation/navigationTheme'
 import { useNavigation } from '@react-navigation/native'
 import route from '../navigation/route'
 import AuthContext from '../auth/context'
+import api from '../api/api'
 
 const validationSchemas = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -22,20 +23,29 @@ function LoginScreen() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        authContext.setUser(user)
+        const shuttle = {
+          id: user.uid,
+          email: user.email,
+          family: '',
+        }
+        authContext.setUser(shuttle)
       }
     })
+
     return unsubscribe
   }, [])
 
   const handleLogin = (userInfo) => {
     auth
       .signInWithEmailAndPassword(userInfo.email, userInfo.password)
-      .then((userCredentials) => {
+      .then(async (userCredentials) => {
         const user = userCredentials.user
-        authContext.setUser(user)
-
-        console.log('Logged in with: ', user.email)
+        const shuttle = {
+          id: user.uid,
+          email: user.email,
+          family: '',
+        }
+        await authContext.setUser(shuttle)
       })
       .catch((error) => console.log(error))
   }

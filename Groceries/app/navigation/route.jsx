@@ -8,4 +8,5 @@ export default Object.freeze({
   FEED: 'Feed',
   WELCOME: 'Welcome',
   RECIPES: 'Recipes',
+  FAMILY: 'Family',
 })
