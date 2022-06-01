@@ -1,5 +1,5 @@
-import React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import React, { useContext } from 'react'
+import { Image, StyleSheet, Text } from 'react-native'
 import * as Yup from 'yup'
 
 import Screen from '../components/Screen'
@@ -8,6 +8,7 @@ import SubmitButton from '../components/forms/SubmitButton'
 import AppForm from '../components/forms/AppForm'
 import { auth } from '../../firebase'
 import API from '../api/api'
+import AuthContext from '../auth/context'
 
 const validationSchemas = Yup.object().shape({
   name: Yup.string().required().label('Name'),
@@ -15,6 +16,9 @@ const validationSchemas = Yup.object().shape({
 })
 
 function FamilyScreen() {
+  const authContext = useContext(AuthContext)
+  const family = authContext.user.family
+  console.log('family', family)
   const handleSubmit = (familyInfo) => {
     API.addFamily(familyInfo).then((res) => console.log(res))
   }
@@ -22,7 +26,7 @@ function FamilyScreen() {
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require('../assets/logo-red.png')} />
-
+      <Text>Current family: {family}</Text>
       <AppForm
         initialValues={{ name: '', password: '' }}
         onSubmit={(values) => handleSubmit(values)}
@@ -34,7 +38,7 @@ function FamilyScreen() {
           icon="account-group"
           keyboardType="text"
           name="name"
-          placeholder="Family Name"
+          placeholder={'Family Name'}
           textContentType="name"
         />
 
