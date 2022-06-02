@@ -45,10 +45,13 @@ function RecipesScreen({ navigation }) {
   const [recipes, setRecipes] = useState([])
 
   const loadRecipes = async () => {
-    const familyName = await api.getFamily(user.uid)
-
+    let familyName = await api.getFamily(user.uid)
+    if (familyName === '') {
+      familyName = user.email
+      console.log('emptyx', user.email)
+    }
     const mUser = {
-      ...user,
+      ...authContext.user,
       family: familyName,
     }
     authContext.setUser(mUser)
@@ -58,6 +61,7 @@ function RecipesScreen({ navigation }) {
   }
 
   useEffect(() => {
+    console.log('------------------------effect---------------------')
     loadRecipes()
   }, [])
 

@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { Button, FlatList, StyleSheet, Text } from 'react-native'
 import * as Yup from 'yup'
 
 import AppForm from '../components/forms/AppForm'
@@ -18,7 +18,7 @@ import AuthContext from '../auth/context'
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
   description: Yup.string().required().label('Description'),
-  instructions: Yup.string().label('Instructions'),
+  // instructions: Yup.string().label('Instructions'),
   category: Yup.object().required().nullable().label('Category'),
   // images: Yup.array().min(1, 'Please select at least one image'),
   image: Yup.string().required().label('Image'),
@@ -31,8 +31,26 @@ const categories = [
   { label: 'Dinner', value: 4, backgroundColor: 'red', icon: 'food-variant' },
   { label: 'Dessert', value: 5, backgroundColor: 'yellow', icon: 'ice-cream' },
 ]
+const InstructionsInput = ({ item }) => (
+  <>
+    <Button title="step" onPress={() => console.log(item.step)} />
+    <Text>Step </Text>
+    <AppFormField
+      maxLength={1000}
+      multiline
+      numberOfLines={4}
+      ANDROIDS
+      name="instructions"
+      placeholder="instructions"
+    />
+  </>
+)
 
 function RecipeEditScreen() {
+  const [step, setStep] = useState(1)
+  const [instructions, setInstructions] = useState([
+    { step: step, content: '' },
+  ])
   const location = useLocation()
   const [uploadVisible, setUploadVisible] = useState(false)
   const [progress, setProgress] = useState(false)
@@ -44,14 +62,33 @@ function RecipeEditScreen() {
     // const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
     //   setProgress(progress),
     // ) // removed location
+    let familyName = ''
 
-    API.addRecipe(recipe, authContext.user.family)
+    if (authContext.user.family === '') {
+      familyName = authContext.user
+    } else {
+      familyName = authContext.user.family
+    }
+    authContext.setUser({
+      ...authContext.user,
+      family: familyName,
+    })
+
+    // API.addRecipe(recipe, familyName)
     // if (!result.ok) {
     // setUploadVisible(false)
     //   return alert('Could not save the recipe')
     // }
     resetForm()
   }
+
+  const addInstructions = () => {
+    setStep(step + 1)
+    instructions.push({ step: step + 1, content: '' })
+    // setInstructions(instructions.push({ step: step + 1, content: '' }))
+  }
+
+  const renderItem = ({ item }) => <InstructionsInput item={item} />
 
   return (
     <Screen style={styles.container}>
@@ -86,14 +123,14 @@ function RecipeEditScreen() {
           numberOfColumns={3}
           width="50%"
         />
-        <AppFormField
-          maxLength={1000}
-          multiline
-          numberOfLines={4}
-          ANDROIDS
-          name="instructions"
-          placeholder="Instructions"
+        <Button title="log" onPress={() => console.log(instructions)} />
+
+        <FlatList
+          data={instructions}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
         />
+        <Button title="add" onPress={addInstructions} />
         <SubmitButton title="Save" />
       </AppForm>
     </Screen>
