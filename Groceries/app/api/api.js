@@ -19,7 +19,7 @@ export default {
         recipeShuttle.data.map((doc) => {
           recipes.push(doc);
         });
-        alert("Boom!");
+        // alert("Boom!");
       })
       .catch((error) => console.log("damnit bobby", error));
     console.log(
