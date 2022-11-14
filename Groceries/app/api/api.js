@@ -1,7 +1,9 @@
 import { useContext } from "react";
 import { auth, firebase } from "../../firebase";
 import AuthContext from "../auth/context";
+import { query, where } from "firebase/firestore";
 
+// recipe ref collection name will need to be renamed
 const recipeRef = firebase.firestore().collection("family");
 const oldrecipeRef = firebase.firestore().collection("groceries");
 const familiesRef = firebase.firestore().collection("families");
@@ -9,17 +11,22 @@ const familiesRef = firebase.firestore().collection("families");
 const user = auth.currentUser;
 export default {
   getRecipes: async (family) => {
+    console.log("family", family);
     const recipes = [];
     await recipeRef
       .doc(family)
       .get()
       .then((res) => {
+        console.log("res 19", res);
         const recipeShuttle = res.data();
-
-        recipeShuttle.data.map((doc) => {
-          recipes.push(doc);
-        });
-        // alert("Boom!");
+        console.log("22", recipeShuttle);
+        if (!recipeShuttle) {
+          console.log("No Results!");
+        } else {
+          recipeShuttle.data.map((doc) => {
+            recipes.push(doc);
+          });
+        }
       })
       .catch((error) => console.log("damnit bobby", error));
     console.log(
@@ -61,6 +68,7 @@ export default {
     const updatedRecipeList = {
       data: recipes,
     };
+
     await recipeRef
       .doc(family)
       .set(updatedRecipeList)
@@ -75,7 +83,7 @@ export default {
   //----------Families------------------
   addFamily: async (family) => {
     const ids = [];
-    familiesRef
+    await familiesRef
       .doc(family.name)
       .get()
       .then((doc) => {
@@ -116,24 +124,40 @@ export default {
     //   .then((res) => alert("Family Created!"))
     //   .catch((error) => alert(error));
   },
+  //TODO: This needs to be done better. I need o
   getFamily: async (userid) => {
     let famName = "";
-    await familiesRef
-      .get()
-      .then((res) => {
-        res.forEach((doc) => {
-          const { userIds } = doc.data();
-          userIds.map((id) => {
-            if (id === userid) {
-              famName = doc.data().name;
-            }
-          });
-        });
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
-        return;
-      });
-    return famName;
+
+    const snapshot = await familiesRef
+      .where("userIds", "array-contains", userid)
+      .get();
+
+    if (snapshot.empty) {
+      console.log("No matching documents.");
+      return;
+    }
+    var shuttle = [];
+    snapshot.forEach((doc) => {
+      shuttle.push(doc.id);
+    });
+
+    // await familiesRef
+    //   .get()
+    //   .then((res) => {
+    //     res.forEach((doc) => {
+    //       const { userIds } = doc.data();
+    //       userIds.map((id) => {
+    //         if (id === userid) {
+    //           famName = doc.data().name;
+    //         }
+    //       });
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error getting document:", error);
+    //     return;
+    //   });
+    // console.log("result", result);
+    return shuttle;
   },
 };
