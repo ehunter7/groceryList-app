@@ -100,8 +100,10 @@ const TabNavigator = () => (
 
 export default function App() {
   const [user, setUser] = useState();
+  const [recipes, setRecipes] = useState([]);
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, recipes, setRecipes }}>
       <NavigationContainer theme={navigationTheme}>
         {user ? <AppNavigator /> : <AuthNavigator />}
       </NavigationContainer>

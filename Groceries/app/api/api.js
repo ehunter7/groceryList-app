@@ -54,6 +54,7 @@ export default {
       createAt: date,
     };
     const recipes = [];
+    // TODO: should be able to do this in one call
     await recipeRef
       .doc(family)
       .get()
@@ -78,6 +79,7 @@ export default {
       .catch((error) => {
         alert(error);
       });
+    return updatedRecipeList;
   },
 
   //----------Families------------------
