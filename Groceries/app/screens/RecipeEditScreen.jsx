@@ -59,17 +59,13 @@ function RecipeEditScreen() {
     setProgress(1)
 
     setUploadVisible(true)
-    // const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
-    //   setProgress(progress),
-    // ) // removed location
 
     const familyName = authContext.user.family
 
-    API.addRecipe(recipe, familyName)
-    // if (!result.ok) {
-    //   setUploadVisible(false)
-    //   return alert('Could not save the recipe')
-    // }
+    const recipes = await API.addRecipe(recipe, familyName)
+
+    authContext.setRecipes(recipes.data)
+
     resetForm()
   }
 

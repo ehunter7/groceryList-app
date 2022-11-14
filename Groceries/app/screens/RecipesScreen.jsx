@@ -15,25 +15,6 @@ import AuthContext from '../auth/context'
 
 import { auth } from '../../firebase'
 
-const recipesList = [
-  {
-    heading: {
-      id: 1,
-      title: 'Lasagna',
-      descripion: 'Meaty Goodness',
-      image: require('../assets/lasagna.jpg'),
-    },
-  },
-  {
-    heading: {
-      id: 2,
-      title: 'Rice and Beans',
-      descripion: 'Wholesome',
-      image: require('../assets/rice-beans.jpg'),
-    },
-  },
-]
-
 function RecipesScreen({ navigation }) {
   const authContext = useContext(AuthContext)
   const user = auth.currentUser
@@ -42,14 +23,15 @@ function RecipesScreen({ navigation }) {
   // )
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [recipes, setRecipes] = useState([])
+  // const [recipes, setRecipes] = useState([])
+  const recipes = authContext.recipes
 
   const loadRecipes = async () => {
     // TODO: I think I can just get the family name from authcontext
     const result = await API.getFamily(user.uid)
 
     const results = await API.getRecipes(result[0])
-    setRecipes(results)
+    authContext.setRecipes(results)
   }
 
   useEffect(() => {
