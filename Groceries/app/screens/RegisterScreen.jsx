@@ -1,12 +1,13 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import * as Yup from 'yup'
+import { auth, firebase } from '../../firebase'
 
-import Screen from '../components/Screen'
-import AppFormField from '../components/forms/AppFormField'
-import SubmitButton from '../components/forms/SubmitButton'
+import API from '../api/api'
 import AppForm from '../components/forms/AppForm'
-import { auth } from '../../firebase'
+import AppFormField from '../components/forms/AppFormField'
+import Screen from '../components/Screen'
+import SubmitButton from '../components/forms/SubmitButton'
 
 const validationSchemas = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -19,6 +20,16 @@ function RegisterScreen() {
       .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
       .then((userCredentials) => {
         const user = userCredentials.user
+        firebase
+          .firestore()
+          .collection('families')
+          .doc(user.email)
+          .set({
+            name: user.email,
+            password: user.email,
+            userIds: [user.uid],
+          })
+
         console.log('Registered with: ', user.email)
       })
       .catch((error) => console.log(error))

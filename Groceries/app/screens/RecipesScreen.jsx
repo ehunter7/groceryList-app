@@ -12,7 +12,7 @@ import ActivityIndicator from '../components/ActivityIndicator'
 import useApi from '../hooks/useApi'
 import API from '../api/api'
 import AuthContext from '../auth/context'
-import api from '../api/api'
+
 import { auth } from '../../firebase'
 
 const recipesList = [
@@ -45,23 +45,14 @@ function RecipesScreen({ navigation }) {
   const [recipes, setRecipes] = useState([])
 
   const loadRecipes = async () => {
-    let familyName = await api.getFamily(user.uid)
-    if (familyName === '') {
-      familyName = user.email
-      console.log('emptyx', user.email)
-    }
-    const mUser = {
-      ...authContext.user,
-      family: familyName,
-    }
-    authContext.setUser(mUser)
-    const results = await API.getRecipes(familyName)
-    // // console.log('---------------', results[0].heading.description)
+    // TODO: I think I can just get the family name from authcontext
+    const result = await API.getFamily(user.uid)
+
+    const results = await API.getRecipes(result[0])
     setRecipes(results)
   }
 
   useEffect(() => {
-    console.log('------------------------effect---------------------')
     loadRecipes()
   }, [])
 

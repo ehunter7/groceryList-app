@@ -21,12 +21,13 @@ const validationSchemas = Yup.object().shape({
 function LoginScreen() {
   const authContext = useContext(AuthContext)
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
+        const familyName = await api.getFamily(user.uid)
         const shuttle = {
           id: user.uid,
           email: user.email,
-          family: '',
+          family: familyName[0],
         }
         authContext.setUser(shuttle)
       }
@@ -40,10 +41,11 @@ function LoginScreen() {
       .signInWithEmailAndPassword(userInfo.email, userInfo.password)
       .then(async (userCredentials) => {
         const user = userCredentials.user
+        const familyName = await api.getFamily(user.uid)
         const shuttle = {
           id: user.uid,
           email: user.email,
-          family: '',
+          family: familyName[0],
         }
         await authContext.setUser(shuttle)
       })

@@ -62,21 +62,12 @@ function RecipeEditScreen() {
     // const result = await recipesApi.addRecipe({ ...recipe }, (progress) =>
     //   setProgress(progress),
     // ) // removed location
-    let familyName = ''
 
-    if (authContext.user.family === '') {
-      familyName = authContext.user
-    } else {
-      familyName = authContext.user.family
-    }
-    authContext.setUser({
-      ...authContext.user,
-      family: familyName,
-    })
+    const familyName = authContext.user.family
 
-    // API.addRecipe(recipe, familyName)
+    API.addRecipe(recipe, familyName)
     // if (!result.ok) {
-    // setUploadVisible(false)
+    //   setUploadVisible(false)
     //   return alert('Could not save the recipe')
     // }
     resetForm()
