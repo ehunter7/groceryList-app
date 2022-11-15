@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -15,17 +16,22 @@ import RecipeInstructions from '../components/RecipeInstructions'
 import colors from '../config/colors'
 
 function RecipeDetailsScreen({ route }) {
-  const listing = route.params
+  const listing = route.params.recipe
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image style={styles.image} source={listing.image} />
+        <Image style={styles.image} source={{ uri: listing.image }} />
         <View style={styles.detailsContainer}>
           <AppText style={styles.title}>{listing.title}</AppText>
           <AppText style={styles.description}>{listing.description}</AppText>
         </View>
-        <IngredientsList />
-        <RecipeInstructions />
+        <IngredientsList ingredients={listing.ingredients} />
+        <RecipeInstructions instructions={listing.instructions} />
+        <Button
+          style={styles.description}
+          onPress={() => console.log(listing.instructions)}
+          title="testinf"
+        />
         <View style={styles.userContainer}>
           <ListItem
             image={require('../assets/lenai.png')}

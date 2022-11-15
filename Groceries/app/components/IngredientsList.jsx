@@ -9,15 +9,15 @@ import RecipeHeader from './RecipeHeader'
 
 var list = ['Useless Ingedient 1', 'Useless Ingedient 2', 'Useless Ingedient 3']
 
-function IngredientsList() {
+function IngredientsList({ ingredients }) {
   const [edit, setEdit] = React.useState(false)
 
   return (
     <View style={styles.container}>
       <RecipeHeader title="INGREDIENTS" edit={edit} setEdit={setEdit} />
       <View style={styles.list}>
-        {list.map((item) => {
-          return <Indgredient key={item} edit={edit} text={item} />
+        {ingredients.map((item) => {
+          return <Indgredient key={item.step} edit={edit} text={item.content} />
         })}
         {edit ? (
           <AppButton title="Save" onPress={() => setEdit(!edit)} />
