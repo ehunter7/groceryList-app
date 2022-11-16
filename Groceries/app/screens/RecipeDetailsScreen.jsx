@@ -34,8 +34,8 @@ function RecipeDetailsScreen({ route }) {
         />
         <View style={styles.userContainer}>
           <ListItem
-            image={require('../assets/lenai.png')}
-            title="Lenai"
+            image={require('../assets/default_profile.jpg')}
+            title="profile"
             subTitle="66 Recipes"
           />
         </View>

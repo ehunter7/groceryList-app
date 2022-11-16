@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, FlatList, ScrollView, StyleSheet, Text } from 'react-native'
+import {
+  Button,
+  FlatList,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from 'react-native'
 import * as Yup from 'yup'
 
 import AppForm from '../components/forms/AppForm'
@@ -96,56 +103,62 @@ function RecipeEditScreen() {
   )
 
   return (
-    <ScrollView>
-      <Screen style={styles.container}>
-        <UploadScreen
-          onDone={() => setUploadVisible(false)}
-          progress={progress}
-          visible={uploadVisible}
-        />
-        <AppForm
-          initialValues={{
-            title: '',
-            description: '',
-            category: null,
-            image: '',
-          }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <FormImagePicker name="image" />
-          <AppFormField maxLength={255} name="title" placeholder="Title" />
-          <AppFormField
-            maxLength={500}
-            name="description"
-            placeholder="Description"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+      enabled={true}
+    >
+      <ScrollView style={styles.container}>
+        <Screen style={styles.container}>
+          <UploadScreen
+            onDone={() => setUploadVisible(false)}
+            progress={progress}
+            visible={uploadVisible}
           />
-          <AppFormPicker
-            items={categories}
-            name="category"
-            placeholder="Category"
-            numberOfColumns={3}
-            width="50%"
-          />
-          <Text>Ingredients</Text>
-          <Button title="add" onPress={addIngredient} />
-          <FlatList
-            data={ingredients}
-            renderItem={renderIngredients}
-            keyExtractor={(item) => item.id}
-          />
+          <AppForm
+            initialValues={{
+              title: '',
+              description: '',
+              category: null,
+              image: '',
+            }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <FormImagePicker name="image" />
+            <AppFormField maxLength={255} name="title" placeholder="Title" />
+            <AppFormField
+              maxLength={500}
+              name="description"
+              placeholder="Description"
+            />
+            <AppFormPicker
+              items={categories}
+              name="category"
+              placeholder="Category"
+              numberOfColumns={3}
+              width="50%"
+            />
+            <Text>Ingredients</Text>
+            <Button title="add" onPress={addIngredient} />
+            <FlatList
+              data={ingredients}
+              renderItem={renderIngredients}
+              keyExtractor={(item) => item.id}
+            />
 
-          <Text>Instructions</Text>
-          <Button title="add" onPress={addInstructions} />
-          <FlatList
-            data={instructions}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-          />
-          <SubmitButton title="Save" />
-        </AppForm>
-      </Screen>
-    </ScrollView>
+            <Text>Instructions</Text>
+            <Button title="add" onPress={addInstructions} />
+            <FlatList
+              data={instructions}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+            />
+            <SubmitButton title="Save" />
+          </AppForm>
+        </Screen>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 

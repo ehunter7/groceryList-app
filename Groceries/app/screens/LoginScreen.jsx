@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import route from '../navigation/route'
 import AuthContext from '../auth/context'
 import api from '../api/api'
+import colors from '../config/colors'
 
 const validationSchemas = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -53,7 +54,7 @@ function LoginScreen() {
   }
   return (
     <Screen style={styles.container}>
-      <Image style={styles.logo} source={require('../assets/logo-red.png')} />
+      <Image style={styles.logo} source={require('../assets/mountains.png')} />
 
       <AppForm
         initialValues={{ email: '', password: '' }}
@@ -91,8 +92,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    width: 80,
-    height: 80,
+    borderRadius: '100%',
+    borderColor: colors.accessory,
+    borderWidth: 2,
+    width: 200,
+    height: 200,
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 20,

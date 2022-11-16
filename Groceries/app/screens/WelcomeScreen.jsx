@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import AppButton from '../components/AppButton'
+import colors from '../config/colors'
 import route from '../navigation/route'
 function WelcomeScreen({ navigation }) {
   return (
@@ -8,7 +9,7 @@ function WelcomeScreen({ navigation }) {
       style={styles.background}
       source={require('../assets/background.jpg')}
     >
-      <Image style={styles.logo} source={require('../assets/logo-red.png')} />
+      <Image style={styles.logo} source={require('../assets/mountains.png')} />
       <View style={styles.buttonContainer}>
         <AppButton
           title="login"
@@ -35,8 +36,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logo: {
-    width: 100,
-    height: 100,
+    borderRadius: '100%',
+    borderColor: colors.accents,
+    borderWidth: 2,
+    width: 200,
+    height: 200,
     position: 'absolute',
     top: 70,
   },

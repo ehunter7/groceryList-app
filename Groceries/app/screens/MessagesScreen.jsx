@@ -11,13 +11,13 @@ const initialMessages = [
     id: 1,
     title: 'T1',
     description: 'D1',
-    image: require('../assets/lenai.png'),
+    image: require('../assets/default_profile.jpg'),
   },
   {
     id: 2,
     title: 'T2',
     description: 'D2',
-    image: require('../assets/lenai.png'),
+    image: require('../assets/default_profile.jpg'),
   },
 ]
 
@@ -53,7 +53,7 @@ function MessagesScreen(props) {
               id: 1,
               title: 'T1',
               description: 'D1',
-              image: require('../assets/lenai.png'),
+              image: require('../assets/default_profile.jpg'),
             },
           ])
         }
