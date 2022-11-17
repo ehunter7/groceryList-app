@@ -27,11 +27,6 @@ function RecipeDetailsScreen({ route }) {
         </View>
         <IngredientsList ingredients={listing.ingredients} />
         <RecipeInstructions instructions={listing.instructions} />
-        <Button
-          style={styles.description}
-          onPress={() => console.log(listing.instructions)}
-          title="testinf"
-        />
         <View style={styles.userContainer}>
           <ListItem
             image={require('../assets/default_profile.jpg')}
