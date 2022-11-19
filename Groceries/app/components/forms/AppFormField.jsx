@@ -12,13 +12,17 @@ function AppFormField({ name, width, value, ...otherProps }) {
     errors,
     touched,
   } = useFormikContext()
+  let fieldValue = values[name]
+  if (name === 'Total Time') {
+    fieldValue = values.prepTime + values.cookTime
+  }
 
   return (
     <>
       <AppTextInput
         onBlur={() => setFieldTouched(name)}
         onChangeText={(text) => setFieldValue(name, text)}
-        value={values[name]}
+        value={fieldValue}
         width={width}
         {...otherProps}
       />

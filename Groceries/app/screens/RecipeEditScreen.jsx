@@ -6,6 +6,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  View,
 } from 'react-native'
 import * as Yup from 'yup'
 
@@ -23,6 +25,7 @@ import API from '../api/api'
 import AuthContext from '../auth/context'
 import AppTextInput from '../components/AppTextInput'
 import InstructionsInput from '../components/InstructionsInput'
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label('Title'),
@@ -42,6 +45,9 @@ const categories = [
 ]
 
 function RecipeEditScreen() {
+  const [text, onChangeText] = React.useState('Useless Text')
+  const [number, onChangeNumber] = React.useState(null)
+
   const [instructionstep, setInstructionStep] = useState(1)
   const [instructions, setInstructions] = useState([
     { step: instructionstep, content: '' },
@@ -103,67 +109,99 @@ function RecipeEditScreen() {
   )
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-      enabled={true}
-    >
-      <ScrollView style={styles.container}>
-        <Screen style={styles.container}>
-          <UploadScreen
-            onDone={() => setUploadVisible(false)}
-            progress={progress}
-            visible={uploadVisible}
+    <KeyboardAvoidingWrapper>
+      <Screen style={styles.container}>
+        <UploadScreen
+          onDone={() => setUploadVisible(false)}
+          progress={progress}
+          visible={uploadVisible}
+        />
+        <AppForm
+          initialValues={{
+            title: '',
+            description: '',
+            category: null,
+            image: '',
+            prepTime: 0,
+            cookTime: 0,
+          }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <FormImagePicker name="image" />
+          <AppFormField maxLength={255} name="title" placeholder="Title" />
+          <AppFormField
+            maxLength={500}
+            name="description"
+            placeholder="Description"
           />
-          <AppForm
-            initialValues={{
-              title: '',
-              description: '',
-              category: null,
-              image: '',
-            }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
+          <AppFormPicker
+            items={categories}
+            name="category"
+            placeholder="Category"
+            numberOfColumns={3}
+            width="50%"
+          />
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-around' }}
           >
-            <FormImagePicker name="image" />
-            <AppFormField maxLength={255} name="title" placeholder="Title" />
+            <Text style={{ alignSelf: 'center' }}>Prep Time</Text>
             <AppFormField
-              maxLength={500}
-              name="description"
-              placeholder="Description"
+              maxLength={3}
+              name="prepTime"
+              placeholder="prep time"
+              keyboardType="numeric"
+              width="28%"
             />
-            <AppFormPicker
-              items={categories}
-              name="category"
-              placeholder="Category"
-              numberOfColumns={3}
-              width="50%"
-            />
-            <Text>Ingredients</Text>
-            <Button title="add" onPress={addIngredient} />
-            <FlatList
-              data={ingredients}
-              renderItem={renderIngredients}
-              keyExtractor={(item) => item.id}
-            />
+            <Text style={{ alignSelf: 'center' }}>Cook Time</Text>
 
-            <Text>Instructions</Text>
-            <Button title="add" onPress={addInstructions} />
-            <FlatList
-              data={instructions}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
+            <AppFormField
+              maxLength={3}
+              name="cookTime"
+              placeholder="cook time"
+              keyboardType="numeric"
+              width="28%"
             />
-            <SubmitButton title="Save" />
-          </AppForm>
-        </Screen>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </View>
+          {/* <TextInput
+              style={styles.input}
+              onChangeText={onChangeNumber}
+              value={number}
+              placeholder="useless placeholder"
+              keyboardType="numeric"
+            /> */}
+          <Text>Ingredients</Text>
+          <Button title="add" onPress={addIngredient} />
+          <FlatList
+            data={ingredients}
+            renderItem={renderIngredients}
+            keyExtractor={(item) => item.id}
+          />
+
+          <Text>Instructions</Text>
+          <Button title="add" onPress={addInstructions} />
+          <FlatList
+            data={instructions}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+          <SubmitButton title="Save" />
+        </AppForm>
+      </Screen>
+    </KeyboardAvoidingWrapper>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
     padding: 10,
   },
 })
