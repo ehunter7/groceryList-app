@@ -16,7 +16,7 @@ const menuItems = [
       name: 'format-list-bulleted',
       backgroundColor: colors.primary,
     },
-    targetScreen: 'Account',
+    targetScreen: 'Recipes',
   },
   {
     title: 'My Messages',
@@ -39,7 +39,7 @@ const menuItems = [
 function AccountScreen({ navigation }) {
   const user = auth.currentUser
   const authContext = useContext(AuthContext)
-  console.log('authContext.user', authContext.user)
+
   const handleLogOut = () => {
     auth.signOut().then(() => {
       alert('Logged out!')
