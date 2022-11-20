@@ -29,8 +29,6 @@ function RegisterScreen() {
             password: user.email,
             userIds: [user.uid],
           })
-
-        console.log('Registered with: ', user.email)
       })
       .catch((error) => console.log(error))
   }

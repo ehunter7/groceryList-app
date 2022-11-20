@@ -67,11 +67,12 @@ function RecipeEditScreen() {
     setUploadVisible(true)
 
     const familyName = authContext.user.family
-
+    const userId = authContext.user.id
+    console.log('1 ', userId)
     recipe.instructions = instructions
     recipe.ingredients = ingredients
 
-    const recipes = await API.addRecipe(recipe, familyName)
+    const recipes = await API.addRecipe(recipe, familyName, userId)
 
     authContext.setRecipes(recipes.data)
 

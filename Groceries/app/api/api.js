@@ -9,17 +9,15 @@ const oldrecipeRef = firebase.firestore().collection("groceries");
 const familiesRef = firebase.firestore().collection("families");
 
 const user = auth.currentUser;
+
 export default {
   getRecipes: async (family) => {
-    console.log("family", family);
     const recipes = [];
     await recipeRef
       .doc(family)
       .get()
       .then((res) => {
-        console.log("res 19", res);
         const recipeShuttle = res.data();
-        console.log("22", recipeShuttle);
         if (!recipeShuttle) {
           console.log("No Results!");
         } else {
@@ -28,11 +26,8 @@ export default {
           });
         }
       })
-      .catch((error) => console.log("damnit bobby", error));
-    console.log(
-      "----------------------------------------------------------------------------"
-    );
-    console.log(recipes);
+      .catch((error) => console.log("damn => ", error));
+
     return recipes;
   },
   deleteRecipes: (recipe) => {
@@ -46,12 +41,15 @@ export default {
         alert(error);
       });
   },
-  addRecipe: async (recipe, family) => {
+  addRecipe: async (recipe, family, userId) => {
+    console.log("2 ", userId);
+
     const date = Date.now();
     const data = {
       id: date,
       recipe,
       createAt: date,
+      createdBy: userId,
     };
     const recipes = [];
     // TODO: should be able to do this in one call
@@ -128,8 +126,6 @@ export default {
   },
   //TODO: This needs to be done better. I need o
   getFamily: async (userid) => {
-    let famName = "";
-
     const snapshot = await familiesRef
       .where("userIds", "array-contains", userid)
       .get();

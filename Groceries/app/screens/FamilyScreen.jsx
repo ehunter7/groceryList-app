@@ -18,7 +18,6 @@ const validationSchemas = Yup.object().shape({
 function FamilyScreen() {
   const authContext = useContext(AuthContext)
   const family = authContext.user.family
-  console.log('family', family)
 
   const handleSubmit = (familyInfo) => {
     API.addFamily(familyInfo).then((res) => console.log(res))
