@@ -46,7 +46,18 @@ export default {
         alert(error);
       });
   },
-  addRecipe: async (recipe, family) => {
+  addRecipe: async (recipe, family, userId) => {
+    console.log("2 ", userId);
+
+    firebase
+      .storage()
+      .ref(recipe.image)
+      .then((snapshot) => {
+        console.log("snapshot => ", snapshot);
+        console.log(`${recipe.image} has been successfully uploaded.`);
+      })
+      .catch((e) => console.log("Uploading image error => ", e));
+
     const date = Date.now();
     const data = {
       id: date,
